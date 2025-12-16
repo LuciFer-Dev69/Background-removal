@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rana.bg - AI Background Remover</title>
+    <meta name="description"
+        content="Remove image backgrounds instantly with AI. Free online tool, no sign-up required.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- AdSense Placeholder -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="container nav-flex">
+            <a href="#" class="logo">
+                Rana<span>.bg</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav">
+                <a href="index.html" class="active">Home</a>
+                <a href="pages/about.html">About Us</a>
+                <a href="pages/privacy-policy.html">Privacy Policy</a>
+                <a href="pages/terms.html">Terms</a>
+                <a href="pages/contact.html">Contact</a>
+            </nav>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="pages/about.html">About Us</a>
+            <a href="pages/privacy-policy.html">Privacy Policy</a>
+            <a href="pages/terms.html">Terms</a>
+            <a href="pages/contact.html">Contact</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- HERO SECTION -->
+        <section class="hero " id="hero">
+            <h1>Remove Backgrounds <br>in Seconds</h1>
+            <p>High-precision AI background removal. 100% Free for previews. Edit, refine, and download.</p>
+
+            <div class="tool-interface glass-panel">
+
+                <!-- STATE: UPLOAD -->
+                <div id="upload-stage" class="upload-zone">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h3>Upload an Image</h3>
+                    <p>Drag & drop or paste an image here</p>
+                    <button class="btn-primary" style="margin-top: 20px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Upload & Auto-Remove Background
+                    </button>
+                    <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" hidden>
+                </div>
+
+                <!-- STATE: PROCESSING (Hidden by default) -->
+                <div id="processing-stage" class="hidden" style="text-align: center; padding: 60px;">
+                    <div class="loader"></div> <!-- Add loader CSS later -->
+                    <h3>Processing...</h3>
+                    <p>Our AI is analyzing your image.</p>
+
+                    <!-- Ad Slot: Processing -->
+                    <div class="ad-slot">
+                        [AdSense: Display Ad]
+                    </div>
+                </div>
+
+                <!-- STATE: EDITOR (Hidden by default) -->
+                <div id="editor-stage" class="workspace hidden">
+
+                    <div class="canvas-viewport">
+                        <div class="canvas-container" id="canvas-container">
+                            <canvas id="main-canvas"></canvas>
+                        </div>
+                    </div>
+                    <aside class="controls-sidebar glass-panel">
+                        <!-- Result Actions (Primary) -->
+                        <div class="result-actions" style="margin-bottom: 20px;">
+
+                            <!-- Original Image Preview (Small Window) -->
+                            <div id="original-preview-container" class="hidden"
+                                style="margin-bottom: 20px; text-align: center;">
+                                <p style="font-size: 0.8rem; margin-bottom: 5px; opacity: 0.7;">Original</p>
+                                <img id="original-preview-img" src="" alt="Original Preview"
+                                    style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid rgba(255,255,255,0.2); cursor: pointer; transition: transform 0.2s;"
+                                    onmouseover="this.style.transform='scale(1.1)'"
+                                    onmouseout="this.style.transform='scale(1.0)'">
+                            </div>
+
+                            <button id="btn-download" class="btn-primary" style="width: 100%; justify-content: center;">
+                                Download PNG
+                            </button>
+                            <p style="font-size: 0.8rem; margin-top: 10px; text-align: center; opacity: 0.6;">
+                                By downloading, you agree to our Terms.
+                            </p>
+
+                            <button id="btn-toggle-edit" class="btn-tool"
+                                style="width: 100%; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20h9"></path>
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                </svg>
+                                Manual Edit Tools
+                            </button>
+                        </div>
+
+                        <!-- Manual Tools (Hidden by default) -->
+                        <div id="manual-tools" class="hidden">
+                            <div class="tool-group">
+                                <span class="tool-label">Mode</span>
+                                <div class="btn-group">
+                                    <button class="btn-tool active" id="btn-erase">Erase</button>
+                                    <button class="btn-tool" id="btn-restore">Restore</button>
+                                </div>
+                            </div>
+
+                            <div class="tool-group">
+                                <span class="tool-label">Brush Size</span>
+                                <input type="range" id="brush-size" min="5" max="100" value="30" style="width: 100%;">
+                            </div>
+
+                            <div class="tool-group">
+                                <span class="tool-label">Actions</span>
+                                <div class="btn-group">
+                                    <button class="btn-tool" id="btn-undo">Undo</button>
+                                    <button class="btn-tool" id="btn-redo">Redo</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tool-group">
+                            <!-- Ad Slot: Sidebar -->
+                            <div class="ad-slot md">
+                                [AdSense: Square Ad]
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- INFO SECTION / AD CONTAINER -->
+        <section style="margin: 40px 0; text-align: center;">
+            <div class="ad-slot" style="max-width: 728px; margin: 0 auto; min-height: 90px;">
+                [AdSense: Leaderboard]
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Rana.bg. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="pages/privacy-policy.html">Privacy Policy</a>
+                <a href="pages/terms.html">Terms of Service</a>
+                <a href="pages/about.html">About Us</a>
+                <a href="pages/contact.html">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/brush.js"></script>
+    <script src="js/ads.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
